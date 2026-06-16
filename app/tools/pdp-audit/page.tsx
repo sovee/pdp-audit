@@ -12,26 +12,18 @@ export default function PdpAuditPage() {
     <main className="min-h-screen bg-[#f7f7f2] px-4 py-6 text-stone-950 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-6">
         <section className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">
-                qingsu.xyz/tools/pdp-audit
-              </p>
-              <h1 className="mt-4 text-4xl font-semibold tracking-normal text-stone-950 sm:text-5xl">
-                PDP Audit Tool
-              </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-stone-600">
-                Turn messy product page notes into a clear conversion audit:
-                above-the-fold clarity, offer strength, trust proof, objections,
-                conversion risks, headline options, and section structure.
-              </p>
-            </div>
-            <div className="rounded-md border border-stone-200 bg-stone-50 px-4 py-3">
-              <p className="text-sm font-medium text-stone-950">Primary CTA</p>
-              <p className="mt-1 text-2xl font-semibold tracking-normal text-stone-950">
-                Comment &quot;PDP&quot;
-              </p>
-            </div>
+          <div className="max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-stone-500">
+              qingsu.xyz/tools/pdp-audit
+            </p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-normal text-stone-950 sm:text-5xl">
+              PDP Audit Tool
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-stone-600">
+              Turn messy product page notes into a clear conversion audit:
+              above-the-fold clarity, offer strength, trust proof, objections,
+              conversion risks, headline options, and section structure.
+            </p>
           </div>
         </section>
 
