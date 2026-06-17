@@ -1,10 +1,12 @@
 export type PdpAuditInput = {
-  productUrl?: string;
-  productContext: string;
-  targetAudience: string;
-  productCategory: string;
-  pricePoint: string;
-  mainOffer?: string;
+  productUrl: string;
+};
+
+export type PdpAuditPageContext = {
+  productUrl: string;
+  pageTitle?: string;
+  metaDescription?: string;
+  pageText: string;
 };
 
 export type PdpAuditReport = {
@@ -17,8 +19,6 @@ export type PdpAuditReport = {
 export type ValidationResult =
   | { success: true; data: PdpAuditInput }
   | { success: false; errors: Partial<Record<keyof PdpAuditInput, string>> };
-
-const MIN_CONTEXT_LENGTH = 80;
 
 function cleanText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -33,38 +33,51 @@ function isValidHttpUrl(value: string) {
   }
 }
 
+function isPublicHostname(hostname: string) {
+  const normalized = hostname.toLowerCase();
+
+  if (
+    normalized === "localhost" ||
+    normalized.endsWith(".localhost") ||
+    normalized === "0.0.0.0" ||
+    normalized === "::1"
+  ) {
+    return false;
+  }
+
+  const ipv4Parts = normalized.split(".").map(Number);
+  if (
+    ipv4Parts.length === 4 &&
+    ipv4Parts.every((part) => Number.isInteger(part) && part >= 0 && part <= 255)
+  ) {
+    const [first, second] = ipv4Parts;
+
+    if (
+      first === 0 ||
+      first === 10 ||
+      first === 127 ||
+      (first === 169 && second === 254) ||
+      (first === 172 && second >= 16 && second <= 31) ||
+      (first === 192 && second === 168)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 export function validatePdpAuditInput(input: unknown): ValidationResult {
   const source = input as Partial<Record<keyof PdpAuditInput, unknown>>;
   const productUrl = cleanText(source.productUrl);
-  const productContext = cleanText(source.productContext);
-  const targetAudience = cleanText(source.targetAudience);
-  const productCategory = cleanText(source.productCategory);
-  const pricePoint = cleanText(source.pricePoint);
-  const mainOffer = cleanText(source.mainOffer);
   const errors: Partial<Record<keyof PdpAuditInput, string>> = {};
 
-  if (productUrl && !isValidHttpUrl(productUrl)) {
+  if (!productUrl) {
+    errors.productUrl = "Paste a product page URL to audit.";
+  } else if (!isValidHttpUrl(productUrl)) {
     errors.productUrl = "Enter a valid http or https product page URL.";
-  }
-
-  if (!productContext) {
-    errors.productContext =
-      "Paste the product page copy, screenshot notes, or product details to audit.";
-  } else if (productContext.length < MIN_CONTEXT_LENGTH) {
-    errors.productContext =
-      "Add more product detail so the audit can be specific. Aim for at least 80 characters.";
-  }
-
-  if (!targetAudience) {
-    errors.targetAudience = "Describe who this product is for.";
-  }
-
-  if (!productCategory) {
-    errors.productCategory = "Enter the ecommerce product category.";
-  }
-
-  if (!pricePoint) {
-    errors.pricePoint = "Enter the price point or price range.";
+  } else if (!isPublicHostname(new URL(productUrl).hostname)) {
+    errors.productUrl = "Enter a public product page URL.";
   }
 
   if (Object.keys(errors).length > 0) {
@@ -74,12 +87,7 @@ export function validatePdpAuditInput(input: unknown): ValidationResult {
   return {
     success: true,
     data: {
-      productUrl: productUrl || undefined,
-      productContext,
-      targetAudience,
-      productCategory,
-      pricePoint,
-      mainOffer: mainOffer || undefined,
+      productUrl,
     },
   };
 }

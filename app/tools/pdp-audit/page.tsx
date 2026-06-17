@@ -4,7 +4,7 @@ import { PdpAuditTool } from "@/app/tools/pdp-audit/components/PdpAuditTool";
 export const metadata: Metadata = {
   title: "PDP Audit Tool | QingSu Growth Tools",
   description:
-    "Generate a practical PDP audit for ecommerce product pages from manual page inputs.",
+    "Generate a practical PDP audit from a public ecommerce product page URL.",
 };
 
 export default function PdpAuditPage() {
@@ -20,7 +20,7 @@ export default function PdpAuditPage() {
               PDP Audit Tool
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-stone-600">
-              Turn messy product page notes into a clear conversion audit:
+              Paste a product page link and get a clear conversion audit:
               above-the-fold clarity, offer strength, trust proof, objections,
               conversion risks, headline options, and section structure.
             </p>
